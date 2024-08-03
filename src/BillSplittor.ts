@@ -37,11 +37,11 @@ export function splitBills(expenses: Expense[], users: string[]): Settlement {
     });
 
     // Calculate the fair share for each participant
-    const totalExpenses = expenses.reduce(
-        (sum, expense) => sum + expense.amount,
-        0
-    );
-    const perPersonShare = totalExpenses / users.length;
+    // const totalExpenses = expenses.reduce(
+    //     (sum, expense) => sum + expense.amount,
+    //     0
+    // );
+    // const perPersonShare = totalExpenses / users.length;
 
     // Calculate net amounts
     const netAmounts: { [key: string]: number } = {};
