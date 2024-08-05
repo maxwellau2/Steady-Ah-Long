@@ -8,6 +8,11 @@
     </head>
     <body>
         <div id="root"></div>
+        <script>
+            window.onbeforeunload = function () {
+                return "Data will be lost if you leave/refresh the page, are you sure?";
+            };
+        </script>
         <script type="module" src="/src/main.tsx"></script>
     </body>
 </html>
