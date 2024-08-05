@@ -18,7 +18,7 @@ const UserCard = ({ user }: { user: User }) => {
             maxW="sm"
         >
             <Flex align="center" mb={4}>
-                <Avatar name={user.name} size="md" mr={4} />
+                <Avatar name={user.name} size="xs" mr={4} />
                 <Text fontSize="xl" fontWeight="bold" color="teal.500">
                     {user.name}
                 </Text>

@@ -9,25 +9,28 @@ import {
     Select,
     Text,
 } from "@chakra-ui/react";
+import { Expense } from "./ExpenseCard";
 
-interface createExpenseProps {
-    createExpense: (
+interface editExpenseProps {
+    editExpense: (
         name: string,
         amount: number,
         payer: string,
         exclusions: string[]
     ) => void;
     availableUsers: string[];
+    expense: Expense;
 }
 
-const CreateExpense = ({
-    createExpense,
+const EditExpense = ({
+    editExpense,
     availableUsers,
-}: createExpenseProps) => {
-    const [name, setName] = React.useState("");
-    const [amount, setAmount] = React.useState("");
-    const [payer, setPayer] = React.useState("");
-    const [exclusions, setExclusions] = React.useState<string[]>([]);
+    expense,
+}: editExpenseProps) => {
+    const [name, setName] = React.useState(expense.name);
+    const [amount, setAmount] = React.useState(expense.amount.toString());
+    const [payer, setPayer] = React.useState(expense.payer);
+    const [exclusions, setExclusions] = React.useState(expense.exclusions);
 
     function handleExclusionClick(exclusion: string) {
         // check if exclusion is already in exclusions
@@ -45,7 +48,7 @@ const CreateExpense = ({
             return;
         }
         console.log("Form submitted:", name, amount, payer);
-        createExpense(name, parseInt(amount), payer, exclusions);
+        editExpense(name, parseInt(amount), payer, exclusions);
     }
 
     return (
@@ -129,4 +132,4 @@ const CreateExpense = ({
     );
 };
 
-export default CreateExpense;
+export default EditExpense;

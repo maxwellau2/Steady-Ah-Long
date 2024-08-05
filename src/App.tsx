@@ -52,6 +52,7 @@ const App = () => {
                 amountOwed: 0,
             };
             setUsers([...users, newUser]);
+            setOpenCreateUser(false);
         }
     }
     function addExpense(
@@ -62,7 +63,7 @@ const App = () => {
     ) {
         // check if expense already exists
         if (expenses.some((expense) => expense.name === name)) {
-            alert("Expense already exists");
+            alert("Expense already exists, consider renaming this expense");
             return;
         } else {
             const newExpense = {
@@ -79,21 +80,35 @@ const App = () => {
                 setUsers([...users]);
             }
             setExpenses([...expenses, newExpense]);
+            setOpenAddExpense(false);
         }
     }
     return (
-        <Box height={"100vh"} width={"100vw"}>
+        <Box height={"100vh"} width={"100vw"} margin={0} padding={0}>
             {/* create nav bar with new user button, and settle debt button */}
             <VStack p={10} marginBottom={5}>
-                <Center p={10}>
+                <Text variant={"heading"} fontWeight={"bold"}>
+                    Steady Ah Long Bill Splittor
+                </Text>
+                <Text variant={"subheading"}>
+                    Add a user to get started, then add an expense
+                </Text>
+                <Center p={5}>
                     <HStack>
-                        <Button onClick={() => setOpenCreateUser(true)}>
+                        <Button
+                            colorScheme="teal"
+                            onClick={() => setOpenCreateUser(true)}
+                        >
                             New User
                         </Button>
-                        <Button onClick={() => setOpenAddExpense(true)}>
+                        <Button
+                            colorScheme="yellow"
+                            onClick={() => setOpenAddExpense(true)}
+                        >
                             Add Expense
                         </Button>
                         <Button
+                            colorScheme="teal"
                             onClick={() => {
                                 const settle = splitBills(
                                     expenses,
@@ -139,6 +154,7 @@ const App = () => {
                                 expense={expense}
                                 expenses={expenses}
                                 setExpenses={setExpenses}
+                                availableUsers={users.map((user) => user.name)}
                             />
                         ))}
                     </Box>
@@ -148,6 +164,8 @@ const App = () => {
             <Modal
                 isOpen={openCreateUser}
                 onClose={() => setOpenCreateUser(false)}
+                isCentered
+                size={"xs"}
             >
                 <ModalOverlay />
                 <ModalContent>
@@ -161,6 +179,7 @@ const App = () => {
             <Modal
                 isOpen={openAddExpense}
                 onClose={() => setOpenAddExpense(false)}
+                size={"xs"}
             >
                 <ModalOverlay />
                 <ModalContent>
@@ -179,6 +198,7 @@ const App = () => {
             <Modal
                 isOpen={openSettleDebt}
                 onClose={() => setOpenSettleDebt(false)}
+                size={"sm"}
             >
                 <ModalOverlay />
                 <ModalContent>

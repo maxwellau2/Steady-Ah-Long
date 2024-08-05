@@ -60,10 +60,12 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
+    HStack,
 } from "@chakra-ui/react";
 import React from "react";
+import EditExpense from "./EditExpense";
 
-interface Expense {
+export interface Expense {
     name: string;
     amount: number;
     payer: string;
@@ -73,16 +75,44 @@ interface Expense {
 interface ExpenseCardProps {
     expense: Expense;
     expenses: Expense[];
+    availableUsers: string[];
     setExpenses: React.Dispatch<React.SetStateAction<Expense[]>>;
 }
 
-const ExpenseCard = ({ expense, expenses, setExpenses }: ExpenseCardProps) => {
+const ExpenseCard = ({
+    expense,
+    expenses,
+    setExpenses,
+    availableUsers,
+}: ExpenseCardProps) => {
     const [openDeleteExpense, setOpenDeleteExpense] = React.useState(false);
+    const [openEditExpense, setOpenEditExpense] = React.useState(false);
 
     function deleteExpense(name: string) {
         // remove the expense from the expenses array
         const newExpenses = expenses.filter((expense) => expense.name !== name);
         setExpenses(newExpenses);
+    }
+
+    function editExpense(
+        name: string,
+        amount: number,
+        payer: string,
+        exclusions: string[]
+    ) {
+        // find the index of the expense to edit
+        const index = expenses.findIndex((expense) => expense.name === name);
+        // create a copy of the expense to edit
+        let expenseCopy = expense;
+        expenseCopy.name = name;
+        expenseCopy.amount = amount;
+        expenseCopy.payer = payer;
+        expenseCopy.exclusions = exclusions;
+        // update the expenses array with the edited expense
+        let newExpenses = [...expenses];
+        newExpenses[index] = expenseCopy;
+        setExpenses(newExpenses);
+        setOpenEditExpense(false);
     }
     return (
         <Box
@@ -131,17 +161,31 @@ const ExpenseCard = ({ expense, expenses, setExpenses }: ExpenseCardProps) => {
                     )}
                 </Flex>
             </Grid>
-            <Button
-                colorScheme="red"
-                marginTop={6}
-                onClick={() => setOpenDeleteExpense(true)}
-            >
-                Delete
-            </Button>
+            <HStack marginTop={6} gap={2}>
+                <Button
+                    colorScheme="red"
+                    onClick={() => setOpenDeleteExpense(true)}
+                >
+                    Delete
+                </Button>
+                <Button
+                    colorScheme="yellow"
+                    onClick={() => {
+                        const idx = expenses.findIndex(
+                            (e) => e.name === expense.name
+                        );
+                        setOpenEditExpense(true);
+                        console.log("edit", idx);
+                    }}
+                >
+                    Edit
+                </Button>
+            </HStack>
             {/* modal to delete an expense */}
             <Modal
                 isOpen={openDeleteExpense}
                 onClose={() => setOpenDeleteExpense(false)}
+                size={"xs"}
             >
                 <ModalOverlay />
                 <ModalContent>
@@ -164,6 +208,26 @@ const ExpenseCard = ({ expense, expenses, setExpenses }: ExpenseCardProps) => {
                             No
                         </Button>
                     </ModalFooter>
+                </ModalContent>
+            </Modal>
+            <Modal
+                isOpen={openEditExpense}
+                onClose={() => setOpenEditExpense(false)}
+                size={"xs"}
+            >
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Edit Expense</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        <EditExpense
+                            editExpense={(name, amount, payer, exclusions) =>
+                                editExpense(name, amount, payer, exclusions)
+                            }
+                            availableUsers={availableUsers}
+                            expense={expense}
+                        />
+                    </ModalBody>
                 </ModalContent>
             </Modal>
         </Box>

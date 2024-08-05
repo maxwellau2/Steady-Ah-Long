@@ -24,7 +24,8 @@ const CreateUser = ({ createUser }: createUserProps) => {
                 backgroundColor: "white",
                 borderRadius: "5px",
                 padding: "10px",
-                outline: "1px solid black",
+                outline: "1px solid lightgray",
+                marginBottom: 5,
             }}
         >
             <form onSubmit={handleSubmit}>
