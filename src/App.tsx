@@ -1,5 +1,13 @@
 import React from "react";
-import { Box, Button, Center, HStack, Text, VStack } from "@chakra-ui/react";
+import {
+    Box,
+    Button,
+    Center,
+    HStack,
+    Img,
+    Text,
+    VStack,
+} from "@chakra-ui/react";
 import {
     Modal,
     ModalOverlay,
@@ -14,6 +22,7 @@ import CreateExpense from "./CreateExpense";
 import ExpenseCard from "./ExpenseCard";
 import { splitBills, Settlement } from "./BillSplittor";
 import DebtSettleModal from "./DebtSettleModal";
+import logo from "./logo.png";
 
 interface User {
     name: string;
@@ -40,7 +49,7 @@ const App = () => {
     const [openAddExpense, setOpenAddExpense] = React.useState(false);
     const [openSettleDebt, setOpenSettleDebt] = React.useState(false);
 
-    function addUser(name: string) {
+    function addUser(name: string, exclude: boolean) {
         // check if name already exists
         if (users.some((user) => user.name === name)) {
             alert("User already exists");
@@ -52,6 +61,14 @@ const App = () => {
                 amountOwed: 0,
             };
             setUsers([...users, newUser]);
+            if (exclude) {
+                // add exclusion to all expenses
+                let expensesCopy = expenses;
+                expensesCopy.forEach((expense) => {
+                    expense.exclusions.push(name);
+                });
+                setExpenses(expensesCopy);
+            }
             setOpenCreateUser(false);
         }
     }
@@ -87,12 +104,29 @@ const App = () => {
         <Box height={"100vh"} width={"100vw"} margin={0} padding={0}>
             {/* create nav bar with new user button, and settle debt button */}
             <VStack p={10} marginBottom={5}>
-                <Text variant={"heading"} fontWeight={"bold"}>
-                    Steady Ah Long Bill Splittor
-                </Text>
-                <Text variant={"subheading"}>
-                    Add a user to get started, then add an expense
-                </Text>
+                {/* insert logo here */}
+                <Img src={logo} width={"30%"} />
+                {/* create a table with all users using UserCard component  in a 3 column grid */}
+                {users.length === 0 ? (
+                    <Text variant={"heading"} fontWeight={"bold"}>
+                        Add a user to get started
+                    </Text>
+                ) : (
+                    <>
+                        <Box
+                            sx={{
+                                display: "grid",
+                                gridTemplateColumns: "repeat(2, 1fr)",
+                                gap: "10px",
+                                marginX: 5,
+                            }}
+                        >
+                            {users.map((user) => (
+                                <UserCard key={user.name} user={user} />
+                            ))}
+                        </Box>
+                    </>
+                )}
                 <Center p={5}>
                     <HStack>
                         <Button
@@ -102,13 +136,16 @@ const App = () => {
                             New User
                         </Button>
                         <Button
-                            colorScheme="yellow"
+                            colorScheme={users.length === 0 ? "gray" : "yellow"}
                             onClick={() => setOpenAddExpense(true)}
+                            isDisabled={users.length === 0}
                         >
                             Add Expense
                         </Button>
                         <Button
-                            colorScheme="teal"
+                            colorScheme={
+                                expenses.length === 0 ? "gray" : "teal"
+                            }
                             onClick={() => {
                                 const settle = splitBills(
                                     expenses,
@@ -118,26 +155,18 @@ const App = () => {
                                 setSettlements(settle);
                                 setOpenSettleDebt(true);
                             }}
+                            isDisabled={expenses.length === 0}
                         >
                             Settle Debt
                         </Button>
                     </HStack>
                 </Center>
-                {/* create a table with all users using UserCard component  in a 3 column grid */}
-                <Box
-                    sx={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(2, 1fr)",
-                        gap: "10px",
-                        marginX: 5,
-                    }}
-                >
-                    {users.map((user) => (
-                        <UserCard key={user.name} user={user} />
-                    ))}
-                </Box>
                 {/* display expenses in a grid */}
-                <Box sx={{ marginX: 5, marginY: 5, width: "100%" }}>
+                <Box
+                    sx={{ marginX: 5, marginY: 5, width: "100%" }}
+                    alignItems={"center"}
+                    alignSelf={"center"}
+                >
                     <Text variant={"heading"} fontWeight={"bold"}>
                         Expenses
                     </Text>
@@ -172,7 +201,11 @@ const App = () => {
                     <ModalHeader>Create User</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <CreateUser createUser={(name) => addUser(name)} />
+                        <CreateUser
+                            createUser={(name, exclude) =>
+                                addUser(name, exclude)
+                            }
+                        />
                     </ModalBody>
                 </ModalContent>
             </Modal>
