@@ -171,13 +171,13 @@ export function splitBills(expenses: Expense[], users: string[]): Settlement {
 }
 
 // Example usage
-const expenses: Expense[] = [
-    { name: "Dinner", amount: 100, payer: "Alice", exclusions: ["Charlie"] },
-    { name: "Drinks", amount: 20, payer: "John", exclusions: ["John"] },
-    { name: "Taxi", amount: 30, payer: "Charlie", exclusions: [] },
-];
+// const expenses: Expense[] = [
+//     { name: "Dinner", amount: 100, payer: "Alice", exclusions: ["Charlie"] },
+//     { name: "Drinks", amount: 20, payer: "John", exclusions: ["John"] },
+//     { name: "Taxi", amount: 30, payer: "Charlie", exclusions: [] },
+// ];
 
-const users: string[] = ["Alice", "Bob", "Charlie", "David", "John", "Jane"];
+// const users: string[] = ["Alice", "Bob", "Charlie", "David", "John", "Jane"];
 
-const settlements = splitBills(expenses, users);
-console.log(settlements);
+// const settlements = splitBills(expenses, users);
+// console.log(settlements);
