@@ -151,7 +151,7 @@ const App = () => {
                                     expenses,
                                     users.map((user) => user.name)
                                 );
-                                console.log(settle);
+                                // console.log(settle);
                                 setSettlements(settle);
                                 setOpenSettleDebt(true);
                             }}

@@ -175,7 +175,7 @@ const ExpenseCard = ({
                             (e) => e.name === expense.name
                         );
                         setOpenEditExpense(true);
-                        console.log("edit", idx);
+                        // console.log("edit", idx);
                     }}
                 >
                     Edit

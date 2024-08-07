@@ -46,7 +46,7 @@ const CreateExpense = ({
             alert("Please fill out all fields");
             return;
         }
-        console.log("Form submitted:", name, amount, payer);
+        // console.log("Form submitted:", name, amount, payer);
         createExpense(name, Number(amount), payer, exclusions);
     }
 

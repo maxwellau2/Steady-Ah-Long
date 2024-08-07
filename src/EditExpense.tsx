@@ -49,7 +49,7 @@ const EditExpense = ({
             alert("Please fill out all fields");
             return;
         }
-        console.log("Form submitted:", name, amount, payer);
+        // console.log("Form submitted:", name, amount, payer);
         editExpense(name, Number(amount), payer, exclusions);
     }
 

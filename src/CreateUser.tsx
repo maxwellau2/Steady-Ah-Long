@@ -13,7 +13,7 @@ const CreateUser = ({ createUser }: createUserProps) => {
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        console.log("Form submitted:", name, exclude);
+        // console.log("Form submitted:", name, exclude);
         createUser(name, exclude);
     }
 

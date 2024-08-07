@@ -23,7 +23,7 @@ const DebtSettleModal = ({
     isOpen,
     onClose,
 }: DebtSettleModalProps) => {
-    console.log(settlements);
+    // console.log(settlements);
     return (
         <Modal isOpen={isOpen} onClose={onClose} size="sm">
             <ModalOverlay />
