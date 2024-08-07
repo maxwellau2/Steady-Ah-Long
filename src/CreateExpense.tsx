@@ -6,6 +6,8 @@ import {
     Button,
     FormControl,
     Input,
+    NumberInput,
+    NumberInputField,
     Select,
     Text,
 } from "@chakra-ui/react";
@@ -45,7 +47,7 @@ const CreateExpense = ({
             return;
         }
         console.log("Form submitted:", name, amount, payer);
-        createExpense(name, parseInt(amount), payer, exclusions);
+        createExpense(name, Number(amount), payer, exclusions);
     }
 
     return (
@@ -70,14 +72,19 @@ const CreateExpense = ({
                         required
                         marginBottom={5}
                     />
-                    <Input
-                        type="number"
-                        placeholder="Amount"
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
-                        required
+                    <NumberInput
+                        defaultValue={undefined}
+                        precision={2}
+                        step={0.2}
                         marginBottom={5}
-                    />
+                        isRequired
+                    >
+                        <NumberInputField
+                            value={amount}
+                            placeholder="Amount"
+                            onChange={(e) => setAmount(e.target.value)}
+                        />
+                    </NumberInput>
                     {/* dropdown for available users */}
                     <Select
                         placeholder="Payer"
